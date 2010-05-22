@@ -10,7 +10,7 @@ module RSpec
       module ViewExtension
         def protect_against_forgery?; end
         def method_missing(selector, *args)
-          if controller.respond_to?(selector) || ::Rails.application.routes.named_routes.helpers.include?(selector)
+          if controller.respond_to?(selector) || _routes.named_routes.helpers.include?(selector)
             controller.__send__(selector, *args)
           else
             super(selector, *args)
@@ -49,7 +49,7 @@ module RSpec
       end
 
       def method_missing(selector, *args)
-        if view.respond_to?(selector) || ::Rails.application.routes.named_routes.helpers.include?(selector)
+        if view.respond_to?(selector) || view._router.named_routes.helpers.include?(selector)
           view.__send__(selector, *args)
         else
           super
