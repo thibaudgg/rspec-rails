@@ -9,5 +9,15 @@ module RSpec::Rails
       group = RSpec::Core::ExampleGroup.describe
       group.included_modules.should include(MailerExampleGroup)
     end
+
+    describe "#mailer" do
+      it "returns a new instance of the mailer" do
+        mailer_class = Class.new(ActionMailer::Base)
+        group = RSpec::Core::ExampleGroup.describe(mailer_class) do
+          include MailerExampleGroup
+        end
+        group.new.mailer.should be_a(mailer_class)
+      end
+    end
   end
 end
